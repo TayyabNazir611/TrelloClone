@@ -26,7 +26,7 @@ export const Board: React.FC = () => {
       <BoardHeader />
 
       <div className="p-[12px] md:p-[24px]">
-        <div className="flex flex-col md:flex-row space-x-[24px] overflow-x-auto pb-[24px]">
+        <div className="flex flex-row md:flex-col space-x-[24px] overflow-x-auto pb-[24px]">
           {board.columns.map((column) => (
             <BoardColumn key={column.id} column={column} />
           ))}
