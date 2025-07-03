@@ -158,6 +158,7 @@ export const WebSocketProvider: React.FC<{ children: React.ReactNode }> = ({
         setBoard((prev) => {
           if (!prev) return prev;
 
+          console.log("rev", prev);
           // Deep copy columns and cards
           const newColumns = prev.columns.map((col) => ({
             ...col,

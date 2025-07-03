@@ -2,9 +2,10 @@
 
 import React, { useState } from "react";
 import { Plus, MoreHorizontal, Edit3, Trash2 } from "lucide-react";
-import { Button } from "./ui/button";
+// import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Card as UICard } from "./ui/card";
+import { Modal, Form, Button } from "react-bootstrap";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -83,9 +84,9 @@ export const BoardColumn: React.FC<BoardColumnProps> = ({ column }) => {
 
   return (
     <UICard className="w-80 flex-shrink-0 bg-gray-50 border-0 shadow-sm">
-      <div className="p-4 space-y-4">
+      <div className="p-4 space-x-[16px]">
         {/* Column Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between gap-[16px]">
           {isEditingTitle ? (
             <Input
               value={editedTitle}
@@ -101,26 +102,39 @@ export const BoardColumn: React.FC<BoardColumnProps> = ({ column }) => {
             </h3>
           )}
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-[8px]">
             <span className="text-sm text-gray-500 bg-gray-200 px-2 py-1 rounded-full">
-              {column.cards.length}
+              {column.cards.length} Tasks
             </span>
-            <DropdownMenu>
+            <DropdownMenu className="bg-transparent border-none outline-none">
               <DropdownMenuTrigger asChild>
-                <Button className="h-8 w-8 p-0">
+                <button className="h-6 w-6 p-0 group-hover:opacity-100 transition-opacity bg-transparent border-none text-black cursor-pointer outline-none">
                   <MoreHorizontal className="w-4 h-4" />
-                </Button>
+                </button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => setIsEditingTitle(true)}>
-                  <Edit3 className="w-4 h-4 mr-2" />
+              <DropdownMenuContent
+                align="end"
+                className="rounded-[8px] px-1 py-2"
+                style={{
+                  background: "white",
+                  padding: "8px 4px",
+                  border: "none",
+                  "box-shadow": "0px 0px 20px #00000060",
+                }}
+              >
+                <DropdownMenuItem
+                  onClick={() => setIsEditingTitle(true)}
+                  style={{ color: "black", cursor: "pointer" }}
+                >
+                  <Edit3 className="w-4 h-4 mr-2" color="black" />
                   Edit title
                 </DropdownMenuItem>
                 <DropdownMenuItem
                   onClick={handleDeleteColumn}
                   className="text-red-600 focus:text-red-600"
+                  style={{ color: "red", cursor: "pointer" }}
                 >
-                  <Trash2 className="w-4 h-4 mr-2" />
+                  <Trash2 className="w-4 h-4 mr-2" color="red" />
                   Delete column
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -150,49 +164,67 @@ export const BoardColumn: React.FC<BoardColumnProps> = ({ column }) => {
           ))}
         </div>
 
-        {/* Add Card */}
-        {isAddingCard ? (
-          <div className="space-y-2">
-            <Input
-              value={newCardTitle}
-              onChange={(e) => setNewCardTitle(e.target.value)}
-              onKeyDown={(e) => handleKeyPress(e, "add")}
-              placeholder="Enter card title..."
-              className="w-full"
-              autoFocus
-            />
-            <Input
-              value={newCardDesc}
-              onChange={(e) => setNewCardDesc(e.target.value)}
-              onKeyDown={(e) => handleKeyPress(e, "add")}
-              placeholder="Enter card Description..."
-              className="w-full"
-              autoFocus
-            />
-            <div className="flex space-x-2">
-              <Button onClick={handleAddCard} className="flex-1">
-                Add Card
-              </Button>
-              <Button
-                onClick={() => setIsAddingCard(false)}
-                // variant="outline"
-                // size="sm"
-              >
-                Cancel
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <Button
-            onClick={() => setIsAddingCard(true)}
-            // variant="ghost"
-            className="w-full flex items-center justify-center space-x-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100"
-          >
-            <Plus className="w-4 h-4" />
-            <span>Add a card</span>
-          </Button>
-        )}
+        <Button
+          onClick={() => setIsAddingCard(true)}
+          // variant="ghost"
+          className="w-fit mt-[12px] px-[24px] py-[12px] flex items-center space-x-2 p-[8px] rounded-[8px] bg-[#3B82F6] text-[#fff] outline-none border-none cursor-pointer"
+        >
+          <Plus className="w-4 h-4" />
+          <span>Add a card</span>
+        </Button>
       </div>
+
+      <Modal
+        show={isAddingCard}
+        onHide={() => setIsAddingCard(false)}
+        centered
+        size="sm"
+      >
+        <Modal.Header closeButton>
+          <Modal.Title className="fs-6 text-dark">Add Card</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label className="text-sm fw-medium text-muted">
+                Title
+              </Form.Label>
+              <Form.Control
+                type="text"
+                value={newCardTitle}
+                onChange={(e) => setEditedTitle(e.target.value)}
+                placeholder="Card title..."
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label className="text-sm fw-medium text-muted">
+                Description
+              </Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                value={newCardDesc}
+                onChange={(e) => setNewCardDesc(e.target.value)}
+                placeholder="Card description..."
+              />
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button
+            variant="outline-secondary"
+            onClick={() => setIsAddingCard(false)}
+          >
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleAddCard}>
+            Update Card
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </UICard>
   );
 };

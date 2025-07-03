@@ -25,8 +25,8 @@ export const Board: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
       <BoardHeader />
 
-      <div className="p-6">
-        <div className="flex space-x-6 overflow-x-auto pb-6">
+      <div className="p-[12px] md:p-[24px]">
+        <div className="flex flex-col md:flex-row space-x-[24px] overflow-x-auto pb-[24px]">
           {board.columns.map((column) => (
             <BoardColumn key={column.id} column={column} />
           ))}

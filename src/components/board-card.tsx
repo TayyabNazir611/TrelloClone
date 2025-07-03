@@ -3,16 +3,18 @@
 import React, { useState } from "react";
 import { MoreHorizontal, Edit3, Trash2 } from "lucide-react";
 import { Card as UICard } from "./ui/card";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../components/ui/dialog";
+// import { Button } from "./ui/button";
+import { Modal, Button, Form } from "react-bootstrap";
+
+// import { Input } from "./ui/input";
+// import { Textarea } from "./ui/textarea";
+// import {
+//   Dialog,
+//   DialogContent,
+//   DialogHeader,
+//   DialogTitle,
+//   DialogTrigger,
+// } from "../components/ui/dialog";
 
 import {
   DropdownMenu,
@@ -90,7 +92,7 @@ export const BoardCard: React.FC<BoardCardProps> = ({
 
   return (
     <UICard
-      className={`cursor-move transition-all duration-200 hover:shadow-md max-w-[500px] rounded-[8px] bg-[#ff3f2260] text-[#fff] backdrop-blur-[5px] px-2 py-3 ${
+      className={`cursor-move transition-all duration-200 shadow-[14px] shadow-[#00000050] max-w-[500px] rounded-[8px] bg-[#f8f8f860] text-[#000] backdrop-blur-[30px] px-2 py-3 ${
         isDragging ? "opacity-50 scale-95" : ""
       }`}
       style={{
@@ -107,9 +109,9 @@ export const BoardCard: React.FC<BoardCardProps> = ({
           </h4>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button className="h-6 w-6 p-0 group-hover:opacity-100 transition-opacity bg-transparent border-none text-white cursor-pointer outline-none">
+              <button className="h-6 w-6 p-0 group-hover:opacity-100 transition-opacity bg-transparent border-none text-black cursor-pointer outline-none">
                 <MoreHorizontal className="w-3 h-3" />
-              </Button>
+              </button>
             </DropdownMenuTrigger>
             <DropdownMenuContent
               align="end"
@@ -148,48 +150,57 @@ export const BoardCard: React.FC<BoardCardProps> = ({
       </div>
 
       {/* Edit Dialog */}
-      <Dialog
-        open={isEditing}
-        onOpenChange={setIsEditing}
-        className="rounded-[12px] p-[12px] max-w-[500px] w-full"
+      <Modal
+        show={isEditing}
+        onHide={() => setIsEditing(false)}
+        centered
+        size="sm"
       >
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="font-600 text-black text-[16px]">
-              Edit Card
-            </DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-1 block">
+        <Modal.Header closeButton>
+          <Modal.Title className="fs-6 text-dark">Edit Card</Modal.Title>
+        </Modal.Header>
+
+        <Modal.Body>
+          <Form>
+            <Form.Group className="mb-3">
+              <Form.Label className="text-sm fw-medium text-muted">
                 Title
-              </label>
-              <Input
+              </Form.Label>
+              <Form.Control
+                type="text"
                 value={editedTitle}
                 onChange={(e) => setEditedTitle(e.target.value)}
                 placeholder="Card title..."
               />
-            </div>
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-1 block">
+            </Form.Group>
+
+            <Form.Group className="mb-3">
+              <Form.Label className="text-sm fw-medium text-muted">
                 Description
-              </label>
-              <Textarea
+              </Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
                 value={editedDescription}
                 onChange={(e) => setEditedDescription(e.target.value)}
                 placeholder="Card description..."
-                rows={3}
               />
-            </div>
-            <div className="flex justify-end space-x-2">
-              <Button onClick={() => setIsEditing(false)} variant="outline">
-                Cancel
-              </Button>
-              <Button onClick={handleUpdateCard}>Update Card</Button>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+            </Form.Group>
+          </Form>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button
+            variant="outline-secondary"
+            onClick={() => setIsEditing(false)}
+          >
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleUpdateCard}>
+            Update Card
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </UICard>
   );
 };
