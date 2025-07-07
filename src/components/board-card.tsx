@@ -92,7 +92,7 @@ export const BoardCard: React.FC<BoardCardProps> = ({
 
   return (
     <UICard
-      className={`cursor-move transition-all duration-200 shadow-[14px] shadow-[#00000050] max-w-[500px] rounded-[8px] bg-[#f8f8f860] text-[#000] backdrop-blur-[30px] px-2 py-3 ${
+      className={`cursor-move transition-all duration-200 shadow-[14px] shadow-[#00000050] max-w-[500px] rounded-[8px] bg-[#f8f8f8] text-[#000] backdrop-blur-[30px] px-2 py-3 ${
         isDragging ? "opacity-50 scale-95" : ""
       }`}
       style={{
@@ -120,7 +120,6 @@ export const BoardCard: React.FC<BoardCardProps> = ({
                 background: "white",
                 padding: "8px 4px",
                 border: "none",
-                shadow: "2px 2px 10px #000",
               }}
             >
               <DropdownMenuItem

@@ -36,23 +36,21 @@ export const BoardHeader: React.FC = () => {
         className="flex items-center"
         style={{ gap: "8px", alignItems: "center", justifyContent: "center" }}
       >
-        <h1 className="text-[24px] md:text-2xl font-bold text-[#3B82F6]">
+        <h1 className="text-[24px] md:text-2xl font-bold text-[#fff]">
           {board?.title || "Loading..."}
         </h1>
         <div className="flex items-center space-x-2">
           {isConnected ? (
-            <div className="flex items-center space-x-2 text-green-600">
+            <div className="flex items-center space-x-[8px] text-green-600">
               <Wifi className="w-4 h-4" color="green" />
-              <span className="text-sm font-medium text-green-500 hidden md:visible">
+              <span className="text-sm font-medium text-green-500">
                 Connected
               </span>
             </div>
           ) : (
             <div className="flex items-center space-x-2 text-red-600">
               <WifiOff className="w-4 h-4" />
-              <span className="text-sm font-medium hidden md:visible">
-                Disconnected
-              </span>
+              <span className="text-sm font-medium">Disconnected</span>
               <Button
                 onClick={reconnect}
                 variant="outline"
@@ -69,9 +67,7 @@ export const BoardHeader: React.FC = () => {
       <div className="flex items-center gap-3" style={{ gap: "12px" }}>
         <div className="flex items-center space-x-2 text-gray-600">
           <Users className="w-4 h-4" />
-          <span className="text-sm font-medium hidden md:visible">
-            Collaborative
-          </span>
+          <span className="text-sm font-medium">Collaborative</span>
         </div>
 
         {isAddingColumn ? (

@@ -22,11 +22,11 @@ export const Board: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <div className="min-h-screen bg-gradient-to-br from-[#0047AB] to-[#CCCCFF]">
       <BoardHeader />
 
       <div className="p-[12px] md:p-[24px]">
-        <div className="flex flex-row md:flex-col space-x-[24px] overflow-x-auto pb-[24px]">
+        <div className="flex flex-row md:flex-col space-x-[24px] overflow-x-auto pb-[24px] w-fit">
           {board.columns.map((column) => (
             <BoardColumn key={column.id} column={column} />
           ))}

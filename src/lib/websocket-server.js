@@ -150,40 +150,83 @@ function handleDeleteCard(payload) {
   }
 }
 
+// function handleMoveCard(payload) {
+//   console.log("payload", payload);
+//   const { cardId, fromColumnId, toColumnId, newPosition } = payload;
+
+//   console.log(cardId, fromColumnId, toColumnId, newPosition, "dragged");
+//   const fromColumn = boardData.columns.find((col) => col.id === fromColumnId);
+//   const toColumn = boardData.columns.find((col) => col.id === toColumnId);
+
+//   if (fromColumn && toColumn) {
+//     const cardIndex = fromColumn.cards.findIndex((c) => c.id === cardId);
+
+//     if (cardIndex !== -1) {
+//       const [card] = fromColumn.cards.splice(cardIndex, 1);
+
+//       // Update positions in source column
+//       fromColumn.cards.forEach((c, index) => {
+//         c.position = index;
+//       });
+
+//       // Insert card at new position
+//       card.position = newPosition;
+//       toColumn.cards.splice(newPosition, 0, card);
+
+//       // Update positions in destination column
+//       toColumn.cards.forEach((c, index) => {
+//         c.position = index;
+//       });
+
+//       broadcast({
+//         type: "CARD_MOVED",
+//         payload: { cardId, fromColumnId, toColumnId, newPosition },
+//       });
+//     }
+//   }
+// }
 function handleMoveCard(payload) {
   console.log("payload", payload);
   const { cardId, fromColumnId, toColumnId, newPosition } = payload;
 
-  console.log(cardId, fromColumnId, toColumnId, newPosition, "dragged");
-  const fromColumn = boardData.columns.find((col) => col.id === fromColumnId);
-  const toColumn = boardData.columns.find((col) => col.id === toColumnId);
+  setBoardData((prev) => {
+    if (!prev) return prev;
 
-  if (fromColumn && toColumn) {
-    const cardIndex = fromColumn.cards.findIndex((c) => c.id === cardId);
+    const columnsCopy = prev.columns.map((col) => ({
+      ...col,
+      cards: [...col.cards],
+    }));
 
-    if (cardIndex !== -1) {
+    const fromColumn = columnsCopy.find((col) => col.id === fromColumnId);
+    const toColumn = columnsCopy.find((col) => col.id === toColumnId);
+
+    if (fromColumn && toColumn) {
+      const cardIndex = fromColumn.cards.findIndex((c) => c.id === cardId);
+      if (cardIndex === -1) return prev;
+
       const [card] = fromColumn.cards.splice(cardIndex, 1);
 
-      // Update positions in source column
-      fromColumn.cards.forEach((c, index) => {
-        c.position = index;
-      });
+      fromColumn.cards.forEach((c, idx) => (c.position = idx));
 
-      // Insert card at new position
       card.position = newPosition;
       toColumn.cards.splice(newPosition, 0, card);
 
-      // Update positions in destination column
-      toColumn.cards.forEach((c, index) => {
-        c.position = index;
-      });
+      toColumn.cards.forEach((c, idx) => (c.position = idx));
 
+      // Send to others via WebSocket/broadcast
       broadcast({
         type: "CARD_MOVED",
         payload: { cardId, fromColumnId, toColumnId, newPosition },
       });
+
+      return {
+        ...prev,
+        columns: columnsCopy,
+      };
     }
-  }
+
+    return prev;
+  });
 }
 
 function handleCreateColumn(payload) {

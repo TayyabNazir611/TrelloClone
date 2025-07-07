@@ -83,7 +83,7 @@ export const BoardColumn: React.FC<BoardColumnProps> = ({ column }) => {
   };
 
   return (
-    <UICard className="w-80 flex-shrink-0 bg-gray-50 border-0 shadow-sm">
+    <UICard className="w-80 flex-shrink-0 bg-gray-50 border-0 shadow-sm w-fit">
       <div className="p-4 space-x-[16px]">
         {/* Column Header */}
         <div className="flex items-center justify-between gap-[16px]">
@@ -106,7 +106,7 @@ export const BoardColumn: React.FC<BoardColumnProps> = ({ column }) => {
             <span className="text-sm text-gray-500 bg-gray-200 px-2 py-1 rounded-full">
               {column.cards.length} Tasks
             </span>
-            <DropdownMenu className="bg-transparent border-none outline-none">
+            <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <button className="h-6 w-6 p-0 group-hover:opacity-100 transition-opacity bg-transparent border-none text-black cursor-pointer outline-none">
                   <MoreHorizontal className="w-4 h-4" />
@@ -119,7 +119,6 @@ export const BoardColumn: React.FC<BoardColumnProps> = ({ column }) => {
                   background: "white",
                   padding: "8px 4px",
                   border: "none",
-                  "box-shadow": "0px 0px 20px #00000060",
                 }}
               >
                 <DropdownMenuItem
@@ -144,7 +143,7 @@ export const BoardColumn: React.FC<BoardColumnProps> = ({ column }) => {
 
         {/* Cards */}
         <div
-          className="space-y-3 min-h-[200px]"
+          className="space-y-[12px] min-h-[200px]"
           onDragOver={handleDragOver}
           onDrop={(e) => handleCardDrop(e, column.cards.length)}
         >
@@ -193,7 +192,7 @@ export const BoardColumn: React.FC<BoardColumnProps> = ({ column }) => {
               <Form.Control
                 type="text"
                 value={newCardTitle}
-                onChange={(e) => setEditedTitle(e.target.value)}
+                onChange={(e) => setNewCardTitle(e.target.value)}
                 placeholder="Card title..."
               />
             </Form.Group>
@@ -221,7 +220,7 @@ export const BoardColumn: React.FC<BoardColumnProps> = ({ column }) => {
             Cancel
           </Button>
           <Button variant="primary" onClick={handleAddCard}>
-            Update Card
+            Add Card
           </Button>
         </Modal.Footer>
       </Modal>
